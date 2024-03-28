@@ -7,6 +7,7 @@ interface DiceNumbers {
   id: number
   number: number
   isSelected: boolean
+
 }
 
 type DiceArray = Array<DiceNumbers>;
@@ -47,9 +48,27 @@ export default function Home() {
 
   function diceElements () {
     return diceNumbers.map(die => {
-       return  <Dice key={die.id} number={die.number} isSelected={die.isSelected} toggle={toggleSelected} />
+       return  <Dice key={die.id} id={die.id} number={die.number} isSelected={die.isSelected} toggle={toggleSelected} />
      })
    }
+
+   function checkForWin() {
+    console.log("checkForWin", diceNumbers)
+    diceNumbers.forEach(die => {
+        if(die.number !== diceNumbers[0].number){
+          return false
+        }
+        else if(die.number === diceNumbers[0].number){
+          if(die.isSelected === true){
+            console.log("You win")
+          }
+        }
+       
+
+    })
+
+   }
+   checkForWin()
 
   return (
     <>
