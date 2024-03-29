@@ -1,8 +1,8 @@
 "use client";
 import Image from "next/image";
 import Dice from "./dice";
-import { useState } from "react";
-
+import { use, useEffect, useState } from "react";
+import Hook from "./hook";
 interface DiceNumbers {
   id: number
   number: number
@@ -15,6 +15,7 @@ type DiceArray = Array<DiceNumbers>;
 export default function Home() {
 
   const [diceNumbers, setDiceNumbers] = useState<DiceArray>(allDiceNumbers())
+  const [win, setWin] = useState(false)
 
   // [1, 2, 3, 4, 5, 6, 1, 2, 3, 4]
   
@@ -34,8 +35,6 @@ export default function Home() {
 
   console.log("diceNumbbers", diceNumbers)
   
-
-
   function reRoll(){
     console.log("reRoll")
     setDiceNumbers(prevDiceNumbers => prevDiceNumbers.map(die => die.isSelected ? die : {id: die.id, number: Math.ceil(Math.random() * 6 ), isSelected: die.isSelected } ))
@@ -61,14 +60,16 @@ export default function Home() {
         else if(die.number === diceNumbers[0].number){
           if(die.isSelected === true){
             console.log("You win")
+            setWin(true)
           }
         }
-       
-
     })
 
    }
-   checkForWin()
+
+   useEffect(() => {
+    checkForWin()
+   },[diceNumbers]) // this is dependency array 
 
   return (
     <>
@@ -92,9 +93,10 @@ export default function Home() {
             <Dice />*/}
           </div>
           <button className="bg-[#5035FF] text-white font-bold text-2xl w-[95px] h-[40px] mx-auto mt-4 rounded-lg" onClick={() => reRoll()}>
-            Roll
+            Roll {win ? "You won": "Yo did not win"}
           </button>
         </div>
+        {/*<Hook /> counter app with useEffect hook*/}
       </main>
     </>
   );
